@@ -8,6 +8,7 @@ import (
 )
 
 func (h *Handler) MovieAdd(w http.ResponseWriter, r *http.Request) {
+	// todo: Check copy in db
 	ctx := r.Context()
 	username := ctx.Value("username").(string)
 	NewMovie := model.Movie{}
