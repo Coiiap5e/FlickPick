@@ -35,7 +35,7 @@ func main() {
 	router.HandleFunc("/", handler1.Home)
 	router.HandleFunc("/registration", handler1.Registration)
 	router.HandleFunc("/login", handler1.Login)
-	router.HandleFunc("/movie/add", middleware.Auth([]byte(cfg.SecretKey), handler1.MovieAdd))
+	router.HandleFunc("/movie/add", middleware.Init(middleware.Auth([]byte(cfg.SecretKey), handler1.MovieAdd)))
 	http.Handle("/", router)
 	http.ListenAndServe(":"+strconv.FormatInt(cfg.Port, 10), nil)
 }
