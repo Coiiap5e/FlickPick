@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
@@ -21,6 +22,15 @@ type MovieRepo struct {
 }
 
 func (r *MovieRepo) CreateNewMovie(ctx context.Context, NewMovie model.Movie) error {
+	var exists bool
+	err := r.db.QueryRow("SELECT EXISTS (SELECT 1 FROM content WHERE kinopoisk_id = $1)", NewMovie.Kinopoisk_id).Scan(&exists)
+	if err != nil {
+		return fmt.Errorf("ошибка проверки элемента: %w", err)
+	}
+	if exists {
+		err := errors.New("элемент уже существует в бд")
+		return err
+	}
 	recordMovie, err := r.db.QueryContext(ctx, `
 		INSERT INTO
 			content (
