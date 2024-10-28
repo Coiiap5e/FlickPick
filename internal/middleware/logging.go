@@ -34,7 +34,9 @@ func Init(method func(http.ResponseWriter, *http.Request)) func(http.ResponseWri
 		if err != nil {
 			logger.Errorf("Ошибка при открытии файла: %v", err)
 		}
+		defer file.Close()
 		logger.SetOutput(file)
+		logger.SetFormatter(&logrus.JSONFormatter{})
 		logger.Info("Это сообщение будет только в файле")
 		ctx := logrus.WithFields(fields)
 		ctx.Info("Received request")
