@@ -38,6 +38,7 @@ func Init(method func(http.ResponseWriter, *http.Request)) func(http.ResponseWri
 		logger.SetOutput(file)
 		logger.SetFormatter(&logrus.JSONFormatter{})
 		logger.Info("Это сообщение будет только в файле")
+		logger.WithFields(fields).Info("fields")
 		ctx := logrus.WithFields(fields)
 		ctx.Info("Received request")
 		method(w, r)
